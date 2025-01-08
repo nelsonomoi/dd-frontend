@@ -1,0 +1,164 @@
+<nz-page-header [nzGhost]="false">
+    <nz-page-header-title>{{ action=='create' ? 'New Policy': 'Edit Policy' }}</nz-page-header-title>
+    <nz-page-header-subtitle></nz-page-header-subtitle>
+
+    <nz-breadcrumb nz-page-header-breadcrumb>
+        <nz-breadcrumb-item>
+            <a routerLink="/uw/policies">Policies</a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>{{ action=='create' ? 'New Policy': 'Edit Policy' }}</nz-breadcrumb-item>
+    </nz-breadcrumb>
+
+
+    <nz-page-header-content>
+    </nz-page-header-content>
+</nz-page-header>
+
+
+<nz-card style="width: 100%;">
+
+    <form nz-form [formGroup]="createPolicyForm" nzLayout="vertical" class="login-form">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+            <div nz-col class="gutter-row" nzSpan="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="policy" nzRequired>Policy Class</nz-form-label>
+                    <nz-form-control nzErrorTip="policy field is required">
+                        <nz-select nzShowSearch nzAllowClear formControlName="policy" nzPlaceHolder="Choose class">
+                            <nz-option nzLabel="Motor Private" nzValue="Motor Private"></nz-option>
+                            <nz-option nzLabel="Motor Commercial" nzValue="Motor Commercial"></nz-option>
+                            <nz-option nzLabel="Fire Industrial Package" nzValue="Fire Industrial Package"></nz-option>
+                            <nz-option nzLabel="Marine Cargo" nzValue="Marine Cargo"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" nzSpan="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="client" nzRequired>Insured</nz-form-label>
+                    <nz-form-control nzErrorTip="client field is required">
+                        <nz-select nzShowSearch nzAllowClear formControlName="client" nzPlaceHolder="Choose client">
+                            <nz-option nzLabel="John Doe" nzValue="John Doe"></nz-option>
+                            <nz-option nzLabel="Test Client 2" nzValue="Test Client 2"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" nzSpan="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="branch" nzRequired>Branch</nz-form-label>
+                    <nz-form-control nzErrorTip="branch field is required">
+                        <nz-select nzShowSearch nzAllowClear formControlName="branch" nzPlaceHolder="Choose Branch">
+                            <nz-option nzLabel="Main Branch" nzValue="Main Branch"></nz-option>
+                            <nz-option nzLabel="Nairobi CBD" nzValue="Nairobi CBD"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" nzSpan="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="agent" nzRequired>Agent/Intermediary</nz-form-label>
+                    <nz-form-control nzErrorTip="agent/intermediary field is required">
+                        <nz-select nzShowSearch nzAllowClear formControlName="agent" nzPlaceHolder="Choose agent/intermediary">
+                            <nz-option nzLabel="1st Insure Agency" nzValue="1st Insure Agency"></nz-option>
+                            <nz-option nzLabel="5th Avenue Insurance Agency Limited"
+                                nzValue="5th Avenue Insurance Agency Limited"></nz-option>
+                            <nz-option nzLabel="Aaron Mutavi John" nzValue="Aaron Mutavi John"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" nzSpan="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="astmarker" nzRequired>AST Marker</nz-form-label>
+                    <nz-form-control nzErrorTip="astmarker is required">
+                        <nz-select nzShowSearch nzAllowClear formControlName="astmarker" [(ngModel)]="selectedMarker" nzPlaceHolder="Choose A/S/T">
+                            <nz-option nzLabel="Annual" nzValue="ANNUAL"></nz-option>
+                            <nz-option nzLabel="Short Time" nzValue="SHORT_TERM"></nz-option>
+                            <nz-option nzLabel="Time on Risk" nzValue="TIME_ON_RISK"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="startDate" nzRequired>Period From</nz-form-label>
+                    <nz-form-control nzErrorTip="Period from field is required">
+                        <nz-date-picker class="datepicker" formControlName="startDate"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="endDate">Period To</nz-form-label>
+                    <nz-form-control nzErrorTip="This field is required">
+                        <nz-date-picker class="datepicker" formControlName="endDate" id="endDate"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label nzFor="insuredAmount" nzRequired>Insured Amount</nz-form-label>
+                    <nz-form-control nzErrorTip="Insured amount should be greater than 0">
+                        <input nz-input formControlName="insuredAmount" type="number" id="insuredAmount" step="0.01"
+                            min="0" (ngModelChange)="computePremiums()"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label nzFor="rate" nzRequired>Rate(%100)</nz-form-label>
+                    <nz-form-control nzErrorTip="Rate should be greater than 0 and less than 100">
+                        <input nz-input formControlName="rate" type="number" id="rate" step="0.01"
+                            min="0" max="100" (ngModelChange)="computePremiums()"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="annualPremium" nzRequired>Annual Premium</nz-form-label>
+                    <nz-form-control nzErrorTip="This field is required">
+                        <input nz-input formControlName="annualPremium" type="number" id="annualPremium" step="0.01"
+                            min="0" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-form-item>
+                    <nz-form-label nzFor="endorseAmount" nzRequired>Endorsed Amount</nz-form-label>
+                    <nz-form-control nzErrorTip="This field is required">
+                        <input nz-input formControlName="endorseAmount" type="number" id="endorseAmount" step="0.01"
+                            min="0" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            
+        </div>
+
+        <div nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="16">
+                <nz-form-item>
+                    <nz-form-label nzRequired>Risk Note</nz-form-label>
+                    <nz-form-control nzHasFeedback nzErrorTip="Please write something here!">
+                        <nz-textarea-count [nzMaxCharacterCount]="2000">
+                            <textarea formControlName="comment" nz-input rows="3"
+                                placeholder="Risk Note"></textarea>
+                        </nz-textarea-count>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+
+
+        <button nz-button nzType="primary" class="corner-radius-5" (click)="onSubmit()"
+            [nzLoading]="loading"> {{ action=='create'? 'Create Policy': 'Save Changes' }}</button>
+    </form>
+</nz-card>

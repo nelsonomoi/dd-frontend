@@ -1,0 +1,102 @@
+<nz-page-header [nzGhost]="false">
+    <nz-page-header-title>Policies</nz-page-header-title>
+    <nz-page-header-subtitle>List of all client policies</nz-page-header-subtitle>
+    <nz-page-header-extra>
+        <nz-space>
+            <button *nzSpaceItem nz-button class="corner-radius-5" nzType="primary" [routerLink]="['/uw/policy/create']" [queryParams]="{ action: 'create' }"> New
+                Policy</button>
+        </nz-space>
+    </nz-page-header-extra>
+    <nz-page-header-content>
+        <nz-descriptions nzSize="small" [nzColumn]="3">
+        </nz-descriptions>
+    </nz-page-header-content>
+</nz-page-header>
+
+<nz-card style="width: 100%">
+    <div class="table-operations">
+        <nz-space>
+            <nz-input-group *nzSpaceItem nzSearch [nzAddOnAfter]="suffixIconButton">
+                <input type="text" nz-input name="searchName" (change)="onSearchNameChange()" [(ngModel)]="searchForm.searchName" #searchName="ngModel" placeholder="Search by Insured" />
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+             <button nz-button nzType="primary" (click)="onSearchUserByName()" [nzLoading]="isLoading" nzSearch><span nz-icon nzType="search"></span></button>
+            </ng-template>
+            <button *nzSpaceItem nz-button (click)="openSearchComponent()"> More Filters...</button>
+        </nz-space>
+       
+    </div>
+    <nz-table ngSkipHydration #basicTable [nzData]="policiesData"
+    nzBordered 
+    [nzTotal]="totalPolicyRecords"
+    [nzShowPagination]="false"
+    [nzPageSize]="pageSize"
+    nzSize="small"
+    [nzScroll]="{x : '1100px'}">
+        <thead>
+            <tr>
+                <th nzWidth="160px">Policy No</th>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Class</th>
+                <th>AST Marker</th>
+                <th>Policy Period</th>
+                <th>Insured Amount</th>
+                <th>Annual Premium</th>
+                <th>Endorse Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (data of basicTable.data; track data.id) {
+            <tr>
+                <td>{{ data.policyNo || '--'}}</td>
+                <td>{{ data.policyHolder || '--'}}</td>
+                <td>{{ data.policyType || '--' }}</td>
+                <td>{{ data.policyClass || '--' }}</td>
+                <td>{{ data.marker || '--' }}</td>
+                <td>{{ data.periodFrom | date:'dd/MM/yyyy'  }} - {{ data.periodTo | date:'dd/MM/yyyy'}}</td>
+                <td>{{ data.insuredAmount | currency:'USD':'':'2.2'  }}</td>
+                <td>{{ data.annualPremium  | currency:'USD':'':'2.2' }}</td>
+                <td>{{ data.endorseAmount  | currency:'USD':'':'2.2' }}</td>
+                <td>
+                    <nz-badge *ngIf="data.status=='ACTIVE'" nzColor="#0ff078"
+                        [nzText]="data.status"></nz-badge>
+                    <nz-badge *ngIf="data.status=='INACTIVE'" nzColor="#ef1015"
+                        [nzText]="data.status"></nz-badge>
+                    
+                </td>
+                <td nzRight>
+                    <nz-space>
+                        <button *nzSpaceItem nz-button nz-dropdown [nzDropdownMenu]="menu"
+                            nzType="default" nzShape="round" nzSize="small"><span nz-icon nzType="ellipsis"></span></button>
+  
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                            <ul nz-menu>
+                                <li nz-menu-item (click)="editPolicy(data)"> <span nz-icon nzType="eye" nzTheme="outline"></span> Edit</li> 
+                                <li nz-menu-item (click)="deletePolicy(data?.id)"> <span nz-icon nzType="close" nzTheme="outline"></span> Delete Policy</li> 
+                            </ul>
+                        </nz-dropdown-menu>
+                    </nz-space>
+                </td>
+            </tr>
+            }
+
+        </tbody>
+    </nz-table>
+
+    <nz-pagination 
+        (nzPageIndexChange)="onPageChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)"
+        [nzPageSizeOptions]="[10,20,50,100]"
+        [nzPageIndex]="1" 
+        [nzTotal]="totalPolicyRecords" 
+        nzShowSizeChanger 
+        [nzPageSize]="pageSize"
+        nzSize="small"
+        style="margin-top: 10px;"
+        [nzShowTotal]="totalTemplate"></nz-pagination>
+        <ng-template #totalTemplate let-total>Total {{ totalPolicyRecords | number }} records</ng-template>
+
+</nz-card>
