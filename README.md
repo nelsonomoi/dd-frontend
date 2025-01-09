@@ -30,4 +30,9 @@ Follow the following instruction to run  dd frontend locally.
 
 You can now access the application on http://localhost:4200
 
+<img width="1703" alt="image" src="https://github.com/user-attachments/assets/03568e61-c087-4208-8367-bd59acdf2857" />
+<img width="1703" alt="image" src="https://github.com/user-attachments/assets/5922db80-3015-4fde-9e33-903efbfe7fdd" />
+
+
+
 
